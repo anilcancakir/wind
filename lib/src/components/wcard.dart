@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../helpers.dart';
 import '../parsers/background_color_parser.dart';
 import '../parsers/border_parser.dart';
+import '../parsers/flex_parser.dart';
 import '../parsers/margin_parser.dart';
 import '../parsers/padding_parser.dart';
 import '../parsers/shadow_parser.dart';
@@ -41,16 +42,20 @@ class WCard extends StatelessWidget {
     final String parsedClassName = classNameParser(className);
 
     Widget childComponent = Card(
-      color: color ?? BackgroundColorParser.applyColor(context, parsedClassName),
+      color:
+          color ?? BackgroundColorParser.applyColor(context, parsedClassName),
       shadowColor: shadowColor,
       surfaceTintColor: surfaceTintColor,
-      elevation: elevation ?? ShadowParser.applyElevation(context, parsedClassName),
+      elevation:
+          elevation ?? ShadowParser.applyElevation(context, parsedClassName),
       shape: shape ?? BorderParser.applyBorder(context, parsedClassName),
       borderOnForeground: borderOnForeground,
       margin: margin ?? MarginParser.applyGeometry(context, parsedClassName),
       clipBehavior: clipBehavior,
       semanticContainer: semanticContainer,
-      child: child != null ? PaddingParser.apply(context, parsedClassName, child!) : null,
+      child: child != null
+          ? PaddingParser.apply(context, parsedClassName, child!)
+          : null,
     );
 
     if (SizeParser.hasAnyValid(parsedClassName)) {
@@ -60,6 +65,6 @@ class WCard extends StatelessWidget {
       );
     }
 
-    return childComponent;
+    return FlexParser.applyFlexible(context, parsedClassName, childComponent);
   }
 }

@@ -4,7 +4,7 @@ import '../theme/wind_theme.dart';
 import 'screens_parser.dart';
 
 class ShadowParser {
-  static final RegExp _shadowRegExp = new RegExp(r'^(?:[a-zA-Z0-9]+:)?shadow-?(?<size>[a-zA-Z0-9]*)$');
+  static final RegExp _shadowRegExp = RegExp(r'^(?:[a-zA-Z0-9]+:)?shadow-?(?<size>[a-zA-Z0-9]*)$');
 
   static double? applyElevation(BuildContext context, String className) {
     double? elevation;

@@ -7,17 +7,25 @@ import 'theme/wind_theme.dart';
 String classNameParser(dynamic className, { List<String> states = const [] }) {
   String parsedClassName = toClassName(className);
 
-  if (states.isNotEmpty) {
-    for (var state in states) {
-      parsedClassName += parsedClassName.replaceAll('$state:', '');
-    }
-  }
+  parsedClassName = classNameState(parsedClassName, states: states);
 
   // Remove class names with "$x:` syntax
   for (var name in parsedClassName.split(' ')) {
     var split = name.split(':');
     if (split.length > 1 && !WindTheme.hasScreen(split[0])) {
       parsedClassName = parsedClassName.replaceAll(name, '');
+    }
+  }
+
+  return parsedClassName;
+}
+
+String classNameState(String className, { List<String> states = const [] }) {
+  String parsedClassName = className;
+
+  if (states.isNotEmpty) {
+    for (var state in states) {
+      parsedClassName = parsedClassName.replaceAll('$state:', '');
     }
   }
 
@@ -53,5 +61,11 @@ InputDecoration wInputDecoration(BuildContext context, dynamic className) {
 }
 
 Color wColor(String name, {int shade = 500}) {
+  final match = RegExp(r'^(?<color>[^-]+)-(?<shade>[0-9]+)').firstMatch(name);
+  if (match != null) {
+    name = match.namedGroup('color')!;
+    shade = int.parse(match.namedGroup('shade')!);
+  }
+
   return WindTheme.getColor(name, shade: shade);
 }

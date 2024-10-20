@@ -58,7 +58,7 @@ class WInkWell extends StatefulWidget {
   final Color? focusColor;
   final Color? hoverColor;
   final Color? highlightColor;
-  final MaterialStateProperty<Color?>? overlayColor;
+  final WidgetStateProperty<Color?>? overlayColor;
   final Color? splashColor;
   final InteractiveInkFeatureFactory? splashFactory;
   final bool? enableFeedback;
@@ -67,7 +67,7 @@ class WInkWell extends StatefulWidget {
   final bool? autofocus;
   final FocusNode? focusNode;
   final bool? canRequestFocus;
-  final MaterialStatesController? statesController;
+  final WidgetStatesController? statesController;
   final Duration? hoverDuration;
 
   @override

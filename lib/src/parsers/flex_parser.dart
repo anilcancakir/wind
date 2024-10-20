@@ -36,6 +36,14 @@ class FlexParser {
 
   static const String overflowScroll = 'overflow-scroll';
 
+  static const List<String> flexFitClasses = [
+    'flex-grow',
+    'flex-auto',
+  ];
+
+  static final RegExp flexRegExp =
+      RegExp(r'^(?:[a-zA-Z0-9]+:)?flex-(?<size>[0-9]+)$');
+
   static Axis applyDirection(BuildContext context, String className) {
     return _applyProperty(context, className, directions, Axis.horizontal);
   }
@@ -96,11 +104,12 @@ class FlexParser {
     return defaultValue;
   }
 
-  static Widget applyOverflow(BuildContext context, String className, Widget child) {
+  static Widget applyOverflow(
+      BuildContext context, String className, Widget child) {
     Widget newChild = child;
 
     for (var name in className.split(' ')) {
-      if (ScreensParser.canApply(context, name) && name == overflowScroll) {
+      if (ScreensParser.canApply(context, name) && name == ScreensParser.without(overflowScroll)) {
         newChild = SingleChildScrollView(
           child: newChild,
         );
@@ -111,12 +120,59 @@ class FlexParser {
   }
 
   static Alignment applyAlignment(BuildContext context, String className) {
-    MainAxisAlignment mainAxisAlignment = applyJustifyContent(context, className);
+    MainAxisAlignment mainAxisAlignment =
+        applyJustifyContent(context, className);
     CrossAxisAlignment crossAxisAlignment = applyAlignItems(context, className);
 
     return Alignment(
-      mainAxisAlignment == MainAxisAlignment.start ? -1.0 : mainAxisAlignment == MainAxisAlignment.end ? 1.0 : 0.0,
-      crossAxisAlignment == CrossAxisAlignment.start ? -1.0 : crossAxisAlignment == CrossAxisAlignment.end ? 1.0 : 0.0,
+      mainAxisAlignment == MainAxisAlignment.start
+          ? -1.0
+          : mainAxisAlignment == MainAxisAlignment.end
+              ? 1.0
+              : 0.0,
+      crossAxisAlignment == CrossAxisAlignment.start
+          ? -1.0
+          : crossAxisAlignment == CrossAxisAlignment.end
+              ? 1.0
+              : 0.0,
     );
+  }
+
+  static Widget applyFlexible(
+      BuildContext context, String className, Widget child) {
+    final flexFit = applyFlexFit(context, className);
+    final flex = applyFlex(context, className);
+
+    if (flexFit == null && flex == null) {
+      return child;
+    }
+
+    return Flexible(
+      flex: flex ?? 1,
+      fit: flexFit ?? FlexFit.loose,
+      child: child,
+    );
+  }
+
+  static FlexFit? applyFlexFit(BuildContext context, String className) {
+    for (var name in className.split(' ')) {
+      if (ScreensParser.canApply(context, name) &&
+          flexFitClasses.contains(ScreensParser.without(name))) {
+        return ScreensParser.without(name) == 'flex-grow'
+            ? FlexFit.tight
+            : FlexFit.loose;
+      }
+    }
+    return null;
+  }
+
+  static int? applyFlex(BuildContext context, String className) {
+    for (var name in className.split(' ')) {
+      final match = flexRegExp.firstMatch(name);
+      if (match != null && ScreensParser.canApply(context, name)) {
+        return int.parse(match.namedGroup('size')!);
+      }
+    }
+    return null;
   }
 }

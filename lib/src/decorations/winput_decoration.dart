@@ -76,6 +76,10 @@ class WInputDecoration extends InputDecoration {
       errorBorder: BorderParser.applyInputBorder(context, classNameParser(className, states: ['error'])) ?? super.errorBorder,
       disabledBorder: BorderParser.applyInputBorder(context, classNameParser(className, states: ['disabled'])) ?? super.disabledBorder,
       border: inputBorder ?? super.border,
+      hintStyle: wTextStyle(context, classNameParser(className, states: ['hint'])).merge(super.hintStyle),
+      errorStyle: wTextStyle(context, classNameParser(className, states: ['error'])).merge(super.errorStyle),
+      helperStyle: wTextStyle(context, classNameParser(className, states: ['helper'])).merge(super.helperStyle),
+      labelStyle: wTextStyle(context, classNameParser(className, states: ['label'])).merge(super.labelStyle),
     );
   }
 }

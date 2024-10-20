@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:wind/src/parsers/flex_parser.dart';
 
 import '../helpers.dart';
 import '../parsers/alignment_parser.dart';
@@ -47,7 +48,7 @@ class WContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final String parsedClassName = classNameParser(className);
 
-    return Container(
+    return FlexParser.applyFlexible(context, parsedClassName, Container(
       alignment: alignment ?? AlignmentParser.applyAlignment(context, parsedClassName),
       padding: padding ?? PaddingParser.applyGeometry(context, parsedClassName),
       decoration: decoration ?? BoxDecoration(
@@ -64,6 +65,6 @@ class WContainer extends StatelessWidget {
       transformAlignment: transformAlignment,
       clipBehavior: clipBehavior,
       child: child,
-    );
+    ));
   }
 }

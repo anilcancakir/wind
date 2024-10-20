@@ -25,6 +25,7 @@ export 'src/components/wcontainer.dart';
 export 'src/components/wtext.dart';
 export 'src/components/wcard.dart';
 export 'src/components/wflex.dart';
+export 'src/components/wflexible.dart';
 export 'src/components/wgap.dart';
 export 'src/painting/wtext_style.dart';
 export 'src/theme/wind_theme.dart';
